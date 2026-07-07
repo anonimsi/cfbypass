@@ -702,7 +702,9 @@ app.post('/session/clean', auth, init, (req, res) => {
         message: 'Session cleaned'
     });
 });
-
+app.get('/', (req, res) => {
+  res.send(`<title> Halaman Kosong</> <h1>Lu Nyasar Apa Gimana Bang Wkwkwk</h1>`)
+}
 // Status
 app.get('/status', auth, init, (req, res) => {
     res.json({
