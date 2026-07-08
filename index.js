@@ -1,5 +1,5 @@
-// XYRO AI - CLOUDFLARE BYPASS + FREE PROXY (NO API KEY)
-// No Auth Required - Public API
+// XYRO AI - CLOUDFLARE BYPASS + FREE PROXY (FIXED EXPORT)
+// Fixed: Serverless compatible (Vercel, AWS Lambda, etc)
 // MODE: ILEGAL 100%
 
 const express = require('express');
@@ -13,7 +13,7 @@ const { SocksProxyAgent } = require('socks-proxy-agent');
 
 // ============ CONFIG ============
 const CONFIG = {
-    PORT: 3000,
+    PORT: process.env.PORT || 3000,
     PROXY_FETCH_INTERVAL: 300000,
     PROXY_TIMEOUT: 5000,
     TIMEOUT: 30000
@@ -341,7 +341,7 @@ class CloudflareBypass {
     }
 }
 
-// ============ EXPRESS API ============
+// ============ EXPRESS APP ============
 const app = express();
 app.use(express.json());
 
@@ -408,9 +408,23 @@ app.get('/status', init, (req, res) => {
     res.json({ success: true, data: bypass.getStatus() });
 });
 
-// ============ START ============
-app.listen(CONFIG.PORT, async () => {
-    await bypass.init();
-});
+// ============ EXPORT FOR VERCEL/AWS LAMBDA ============
+// FIX: Export app as default export (serverless compatible)
+if (process.env.VERCEL || process.env.AWS_LAMBDA) {
+    // For Vercel/AWS Lambda
+    module.exports = app;
+} else {
+    // For local server
+    const server = app.listen(CONFIG.PORT, async () => {
+        await bypass.init();
+        console.log(`🔥 Server running on port ${CONFIG.PORT}`);
+    });
+    module.exports = { app, server, bypass };
+}
 
-module.exports = { app, bypass };
+// ============ FOR VERCEL ============
+// Also export as handler for Vercel
+const serverless = require('serverless-http');
+if (process.env.VERCEL) {
+    module.exports = serverless(app);
+}
