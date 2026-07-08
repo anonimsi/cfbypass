@@ -1,24 +1,21 @@
 {
-  "name": "cloudflare-bypass-free-proxy",
+  "name": "cloudflare-bypass-api",
   "version": "2.0.0",
-  "description": "XYRO AI - Cloudflare Bypass with Free Proxy Rotation",
-  "main": "cf_bypass_free.js",
+  "description": "Cloudflare Bypass API - Serverless",
+  "main": "index.js",
   "scripts": {
-    "start": "node cf_bypass_free.js",
-    "dev": "nodemon cf_bypass_free.js"
+    "start": "node index.js",
+    "vercel": "vercel"
   },
   "dependencies": {
-    "axios": "^1.4.0",
     "express": "^4.18.2",
+    "axios": "^1.4.0",
     "puppeteer": "^23.0.0",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2",
     "user-agents": "^1.1.0",
     "https-proxy-agent": "^7.0.0",
     "socks-proxy-agent": "^8.0.0",
-    "crypto": "^1.0.1"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.22"
+    "serverless-http": "^3.2.0"
   }
 }
